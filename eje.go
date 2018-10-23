@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"time"
 
 	"encoding/json"
 
@@ -17,7 +18,12 @@ const urlPEL = "https://www.peruanosenlinea.com/demo/reniec/example/consulta.php
 func main() {
 	engine := gin.Default()
 
-	engine.Use(cors.Default())
+	engine.Use(cors.New(cors.Config{
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "X-Localization"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	engine.Any("/getfromessalud", func(c *gin.Context) {
 		dni := struct {
@@ -46,5 +52,5 @@ func main() {
 		c.JSON(resp.StatusCode, response)
 	})
 
-	engine.Run(":3300")
+	engine.Run(":8080")
 }
