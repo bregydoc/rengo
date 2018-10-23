@@ -23,6 +23,7 @@ func main() {
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "X-Localization"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
+		AllowAllOrigins:  true,
 	}))
 
 	engine.Any("/getfromessalud", func(c *gin.Context) {
